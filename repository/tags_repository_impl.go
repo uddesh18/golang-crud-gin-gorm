@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"golang-crud-gin/data/request"
 	"golang-crud-gin/helper"
 	"golang-crud-gin/model"
@@ -20,7 +21,9 @@ func NewTagsREpositoryImpl(Db *gorm.DB) TagsRepository {
 // Delete implements TagsRepository
 func (t *TagsRepositoryImpl) Delete(tagsId int) {
 	var tags model.Tags
+	fmt.Println(tagsId)
 	result := t.Db.Where("id = ?", tagsId).Delete(&tags)
+	fmt.Println(result)
 	helper.ErrorPanic(result.Error)
 }
 
