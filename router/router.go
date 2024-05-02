@@ -10,7 +10,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func NewRouter(tagsController *controller.TagsController) *gin.Engine {
+func NewRouter(tagsController *controller.TagsController, tagsInfoController *controller.TagsInfoController) *gin.Engine {
 	router := gin.Default()
 	// add swagger
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -22,9 +22,10 @@ func NewRouter(tagsController *controller.TagsController) *gin.Engine {
 	tagsRouter := baseRouter.Group("/tags")
 	tagsRouter.GET("", tagsController.FindAll)
 	tagsRouter.GET("/:tagId", tagsController.FindById)
-	tagsRouter.POST("", tagsController.Create)
+	// tagsRouter.POST("", tagsController.Create)
 	tagsRouter.PATCH("/:tagId", tagsController.Update)
 	tagsRouter.DELETE("/:tagId", tagsController.Delete)
 
+	tagsRouter.POST("", tagsInfoController.CreateInfo)
 	return router
 }

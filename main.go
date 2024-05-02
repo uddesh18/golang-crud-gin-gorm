@@ -29,18 +29,22 @@ func main() {
 	validate := validator.New()
 
 	db.Table("tags").AutoMigrate(&model.Tags{})
+	db.Table("tags_info").AutoMigrate(&model.TagsInfo{})
 
 	// Repository
 	tagsRepository := repository.NewTagsREpositoryImpl(db)
+	tagsInfoRepository := repository.NewTagsInfoRepositoryImpl(db)
 
 	// Service
 	tagsService := service.NewTagsServiceImpl(tagsRepository, validate)
+	tagsInfoService := service.NewTagsInfoServiceImpl(tagsInfoRepository, validate)
 
 	// Controller
 	tagsController := controller.NewTagsController(tagsService)
+	tagsInfoController := controller.NewTagsInfoController(tagsInfoService)
 
 	// Router
-	routes := router.NewRouter(tagsController)
+	routes := router.NewRouter(tagsController, tagsInfoController)
 
 	server := &http.Server{
 		Addr:    ":8888",
