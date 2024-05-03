@@ -22,10 +22,10 @@ func NewRouter(tagsController *controller.TagsController, tagsInfoController *co
 	tagsRouter := baseRouter.Group("/tags")
 	tagsRouter.GET("", tagsController.FindAll)
 	tagsRouter.GET("/:tagId", tagsController.FindById)
-	// tagsRouter.POST("", tagsController.Create)
+	tagsRouter.POST("", tagsController.Create)
 	tagsRouter.PATCH("/:tagId", tagsController.Update)
 	tagsRouter.DELETE("/:tagId", tagsController.Delete)
 
-	tagsRouter.POST("", tagsInfoController.CreateInfo)
+	// tagsRouter.POST("", tagsInfoController.CreateInfo)
 	return router
 }
