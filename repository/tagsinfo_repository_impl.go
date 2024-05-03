@@ -18,7 +18,7 @@ func (t *TagsInfoRepositoryImpl) Delete(tagsId int) {
 }
 
 // FindAll implements TagsInfoRepository.
-func (t *TagsInfoRepositoryImpl) FindAll() []model.TagsInfo {
+func (t *TagsInfoRepositoryImpl) FindAllInfo() []model.TagsInfo {
 	var tagsInfo []model.TagsInfo
 	result := t.Db.Find(&tagsInfo)
 	helper.ErrorPanic(result.Error)

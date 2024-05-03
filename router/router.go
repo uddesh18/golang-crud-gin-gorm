@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"golang-crud-gin/controller"
 
 	"net/http"
@@ -20,6 +21,10 @@ func NewRouter(tagsController *controller.TagsController, tagsInfoController *co
 	})
 	baseRouter := router.Group("/api")
 	tagsRouter := baseRouter.Group("/tags")
+
+	fmt.Println(baseRouter)
+	fmt.Println(tagsRouter)
+
 	tagsRouter.GET("", tagsController.FindAll)
 	tagsRouter.GET("/:tagId", tagsController.FindById)
 	tagsRouter.POST("", tagsController.Create)
@@ -27,5 +32,6 @@ func NewRouter(tagsController *controller.TagsController, tagsInfoController *co
 	tagsRouter.DELETE("/:tagId", tagsController.Delete)
 
 	// tagsRouter.POST("", tagsInfoController.CreateInfo)
+	tagsRouter.GET("/all", tagsInfoController.FindAllInfo)
 	return router
 }

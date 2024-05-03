@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"golang-crud-gin/data/request"
 	"golang-crud-gin/data/response"
 	"golang-crud-gin/helper"
@@ -43,4 +44,24 @@ func (controller *TagsInfoController) CreateInfo(ctx *gin.Context) {
 	}
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
+}
+
+// FindAllTags 		godoc
+// @Summary			Get All tags.
+// @Description		Return list of tags.
+// @Tags			tags
+// @Success			200 {obejct} response.Response{}
+// @Router			/tags [get]
+func (controller *TagsInfoController) FindAllInfo(ctx *gin.Context) {
+	log.Info().Msg("findAllInfo tags")
+	tagResponse := controller.tagsinfo_service.FindAllInfo()
+	fmt.Println(tagResponse)
+	webResponse := response.Response{
+		Code:   http.StatusOK,
+		Status: "Ok",
+		Data:   tagResponse,
+	}
+	ctx.Header("Content-Type", "application/json")
+	ctx.JSON(http.StatusOK, webResponse)
+
 }

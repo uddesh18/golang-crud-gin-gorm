@@ -2,6 +2,7 @@ package service
 
 import (
 	"golang-crud-gin/data/request"
+	"golang-crud-gin/data/response"
 	"golang-crud-gin/helper"
 	"golang-crud-gin/model"
 	"golang-crud-gin/repository"
@@ -12,6 +13,25 @@ import (
 type TagsInfoServiceImpl struct {
 	TagsInfoRepository repository.TagsInfoRepository
 	Validate           *validator.Validate
+}
+
+// FindAll implements TagsInfoService.
+func (t *TagsInfoServiceImpl) FindAllInfo() []response.TagsInfoResponse {
+	result := t.TagsInfoRepository.FindAllInfo()
+
+	var tags []response.TagsInfoResponse
+	for _, value := range result {
+		tag := response.TagsInfoResponse{
+			Tid:    value.Tid,
+			Class:  value.Class,
+			Bg:     value.Bg,
+			Dob:    value.Dob,
+			Gender: value.Gender,
+		}
+		tags = append(tags, tag)
+	}
+
+	return tags
 }
 
 // CreateInfo implements TagsInfoService.
