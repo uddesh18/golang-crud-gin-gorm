@@ -51,7 +51,7 @@ func (controller *TagsInfoController) CreateInfo(ctx *gin.Context) {
 // @Description		Return list of tags.
 // @Tags			tags
 // @Success			200 {obejct} response.Response{}
-// @Router			/tags [get]
+// @Router			/all [get]
 func (controller *TagsInfoController) FindAllInfo(ctx *gin.Context) {
 	log.Info().Msg("findAllInfo tags")
 	tagResponse := controller.tagsinfo_service.FindAllInfo()
