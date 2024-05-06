@@ -30,21 +30,26 @@ func main() {
 
 	db.Table("tags").AutoMigrate(&model.Tags{})
 	db.Table("tags_info").AutoMigrate(&model.TagsInfo{})
+	db.Table("user_login_details").AutoMigrate(&model.UserLoginDetails{})
+	db.Table("user_registration").AutoMigrate(&model.UserRegistration{})
 
 	// Repository
 	tagsRepository := repository.NewTagsREpositoryImpl(db)
 	tagsInfoRepository := repository.NewTagsInfoRepositoryImpl(db)
+	userlogindetailRepository := repository.NewUserLoginDetailsRepositoryImpl(db)
 
 	// Service
 	tagsService := service.NewTagsServiceImpl(tagsRepository, validate)
 	tagsInfoService := service.NewTagsInfoServiceImpl(tagsInfoRepository, validate)
+	userlogindetailsService := service.NewUserLoginDetailServiceImpl(userlogindetailRepository, validate)
 
 	// Controller
 	tagsController := controller.NewTagsController(tagsService)
 	tagsInfoController := controller.NewTagsInfoController(tagsInfoService)
+	userlogindetailController := controller.NewLoginDetailsController(userlogindetailsService)
 
 	// Router
-	routes := router.NewRouter(tagsController, tagsInfoController)
+	routes := router.NewRouter(tagsController, tagsInfoController, userlogindetailController)
 
 	server := &http.Server{
 		Addr:    ":8888",

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"golang-crud-gin/helper"
 	"golang-crud-gin/model"
 
 	"gorm.io/gorm"
@@ -11,8 +12,11 @@ type UserLoginDetailsRepositoryImpl struct {
 }
 
 // FetchData implements UserLoginDetailsRepository.
-func (u *UserLoginDetailsRepositoryImpl) FetchData(user model.UserLoginDetails) {
-	panic("unimplemented")
+func (u *UserLoginDetailsRepositoryImpl) FetchData() []model.UserLoginDetails {
+	var userlogin []model.UserLoginDetails
+	result := u.Db.Find(&userlogin)
+	helper.ErrorPanic(result.Error)
+	return userlogin
 }
 
 func NewUserLoginDetailsRepositoryImpl(Db *gorm.DB) UserLoginDetailsRepository {
