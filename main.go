@@ -7,10 +7,10 @@ import (
 	"golang-crud-gin/helper"
 	"golang-crud-gin/model"
 	"golang-crud-gin/repository"
-	"golang-crud-gin/router"
 	"golang-crud-gin/service"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/zerolog/log"
 )
@@ -37,19 +37,28 @@ func main() {
 	tagsRepository := repository.NewTagsREpositoryImpl(db)
 	tagsInfoRepository := repository.NewTagsInfoRepositoryImpl(db)
 	userlogindetailRepository := repository.NewUserLoginDetailsRepositoryImpl(db)
+	userregistrationRepository := repository.NewUserRegistrationImpl(db)
 
 	// Service
 	tagsService := service.NewTagsServiceImpl(tagsRepository, validate)
 	tagsInfoService := service.NewTagsInfoServiceImpl(tagsInfoRepository, validate)
 	userlogindetailsService := service.NewUserLoginDetailServiceImpl(userlogindetailRepository, validate)
+	userRegistrationService := service.NewUserRegistrationServiceImpl(userregistrationRepository, validate)
 
 	// Controller
-	tagsController := controller.NewTagsController(tagsService)
 	tagsInfoController := controller.NewTagsInfoController(tagsInfoService)
 	userlogindetailController := controller.NewLoginDetailsController(userlogindetailsService)
+	userRegistrationController := controller.NewUserRegistrationController(userRegistrationService)
 
 	// Router
-	routes := router.NewRouter(tagsController, tagsInfoController, userlogindetailController)
+	router := gin.Default()
+	// add swagger
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	router.GET("", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, "welcome home")
+	})
+	routes := TagsRouter("/api", router)
 
 	server := &http.Server{
 		Addr:    ":8888",

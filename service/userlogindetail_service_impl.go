@@ -13,8 +13,24 @@ type UserLoginDetailServiceImpl struct {
 }
 
 // LoginUser implements UserLoginDetailService.
-func (u *UserLoginDetailServiceImpl) LoginUser() []response.Response {
-	panic("unimplemented")
+func (u *UserLoginDetailServiceImpl) LoginUser() []response.UldResponse {
+	result := u.UserLoginDetailsRepository.FetchData()
+
+	var tags []response.UldResponse
+	for _, value := range result {
+		tag := response.UldResponse{
+			Id:           value.Id,
+			RegisteredId: value.RegisteredId,
+			Username:     value.Username,
+			AccessToken:  value.AccessToken,
+			Password:     value.Password,
+			CreatedDate:  value.CreatedDate.String(),
+			IsActive:     value.IsActive,
+		}
+		tags = append(tags, tag)
+	}
+
+	return tags
 }
 
 func NewUserLoginDetailServiceImpl(userlogindetailsRepository repository.UserLoginDetailsRepository, validate *validator.Validate) UserLoginDetailService {

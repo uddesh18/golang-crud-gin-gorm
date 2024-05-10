@@ -28,12 +28,12 @@ func NewLoginDetailsController(service service.UserLoginDetailService) *UserLogi
 // @Router			/allusers [get]
 func (controller *UserLoginDetailsController) UserDetails(ctx *gin.Context) {
 	log.Info().Msg("All User Login Details")
-	Response := controller.userlogindetails_service.LoginUser()
-	fmt.Println(Response)
+	uldetailsResponse := controller.userlogindetails_service.LoginUser()
+	fmt.Println(uldetailsResponse)
 	webResponse := response.Response{
 		Code:   http.StatusOK,
 		Status: "Ok",
-		Data:   Response,
+		Data:   uldetailsResponse,
 	}
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
